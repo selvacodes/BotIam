@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../user.operations.ts"],
-  "sourcesContent": ["import { z } from 'zod';\n\nexport const UserSchema = z.object({\n  email: z.string().email(),\n  password: z.string().min(6),\n})\n\ntype User = z.infer<typeof UserSchema>"],
-  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBAAkB;AAEX,MAAM,aAAa,aAAE,OAAO;AAAA,EACjC,OAAO,aAAE,OAAO,EAAE,MAAM;AAAA,EACxB,UAAU,aAAE,OAAO,EAAE,IAAI,CAAC;AAC5B,CAAC;",
+  "sourcesContent": ["import { z } from 'zod';\nimport { _notImplemented } from './utils';\nimport * as DL from './user.data'\n\nexport const UserSchema = z.object({\n  email: z.string().email(),\n  password: z.string().min(6),\n})\n\nexport const Id = z.object({\n  id: z.string().uuid()\n})\n\nexport const UserCompleteSchema = z.intersection(UserSchema, Id)\n\nexport type User = z.infer<typeof UserSchema>\n\nexport type UserWithId = z.infer<typeof UserCompleteSchema>\n\nexport const addUser = async (user : User) : UserWithId => {\n   const addedUSer = await DL.addUserDL(user)\n    return addedUser\n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBAAkB;AAElB,SAAoB;AAEb,MAAM,aAAa,aAAE,OAAO;AAAA,EACjC,OAAO,aAAE,OAAO,EAAE,MAAM;AAAA,EACxB,UAAU,aAAE,OAAO,EAAE,IAAI,CAAC;AAC5B,CAAC;AAEM,MAAM,KAAK,aAAE,OAAO;AAAA,EACzB,IAAI,aAAE,OAAO,EAAE,KAAK;AACtB,CAAC;AAEM,MAAM,qBAAqB,aAAE,aAAa,YAAY,EAAE;AAMxD,MAAM,UAAU,OAAO,SAA6B;AACxD,QAAM,YAAY,MAAM,GAAG,UAAU,IAAI;AACxC,SAAO;AACX;",
   "names": []
 }

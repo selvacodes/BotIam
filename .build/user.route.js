@@ -37,8 +37,10 @@ const userRouter = import_express2.default.Router();
 const UserSchemaInBody = import_zod.z.object({
   body: import_user.UserSchema
 });
-userRouter.post("/add", jsonParser, (0, import_validate.validate)(UserSchemaInBody), (req, res) => {
-  res.json({ ...req.body });
+userRouter.post("/add", jsonParser, (0, import_validate.validate)(UserSchemaInBody), async (req, res) => {
+  const userToAdd = req.body;
+  const toReturn = await (0, import_user.addUser)(userToAdd);
+  res.json(toReturn);
 });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

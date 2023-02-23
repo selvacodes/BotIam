@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../user.data.ts"],
-  "sourcesContent": ["import { User } from './user.operations'\n\nconst addUser = (user : User) => {\n  \n}"],
-  "mappings": ";AAEA,MAAM,UAAU,CAAC,SAAgB;AAEjC;",
-  "names": []
+  "sourcesContent": ["import { User,UserWithId } from './user.operations'\nimport { v4 as uuidv4 } from 'uuid';\nimport { readFile,writeFile } from 'fs-extra'\n\nexport const addUserDL = async (user : User) => {\n  const currentDataAsString : string = await readFile(\"./store.json\",\"utf-8\")\n  const parsed : any = JSON.parse(currentDataAsString);\n  const currentUsers : UserWithId[] = parsed.users;\n  const dataToInsert : UserWithId = {...user , id : uuidv4() }\n  const addedUserList = currentUsers.concat(dataToInsert)\n  const toUpdate = { ...parsed , users : addedUserList}\n  const currentDataAsString1 : string = await writeFile(\"./store.json\",JSON.stringify(toUpdate))\n  return dataToInsert\n  \n  \n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AACA,kBAA6B;AAC7B,sBAAmC;AAE5B,MAAM,YAAY,OAAO,SAAgB;AAC9C,QAAM,sBAA+B,UAAM,0BAAS,gBAAe,OAAO;AAC1E,QAAM,SAAe,KAAK,MAAM,mBAAmB;AACnD,QAAM,eAA8B,OAAO;AAC3C,QAAM,eAA4B,EAAC,GAAG,MAAO,QAAK,YAAAA,IAAO,EAAE;AAC3D,QAAM,gBAAgB,aAAa,OAAO,YAAY;AACtD,QAAM,WAAW,EAAE,GAAG,QAAS,OAAQ,cAAa;AACpD,QAAM,uBAAgC,UAAM,2BAAU,gBAAe,KAAK,UAAU,QAAQ,CAAC;AAC7F,SAAO;AAGT;",
+  "names": ["uuidv4"]
 }
