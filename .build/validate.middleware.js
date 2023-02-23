@@ -18,10 +18,10 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var validate_middleware_exports = {};
 __export(validate_middleware_exports, {
-  validate: () => validate
+  validateInputSchema: () => validateInputSchema
 });
 module.exports = __toCommonJS(validate_middleware_exports);
-const validate = (schema) => (req, res, next) => {
+const validateInputSchema = (schema) => (req, res, next) => {
   const result = schema.safeParse({
     body: req.body,
     query: req.query,
@@ -35,6 +35,6 @@ const validate = (schema) => (req, res, next) => {
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  validate
+  validateInputSchema
 });
 //# sourceMappingURL=validate.middleware.js.map

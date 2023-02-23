@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../utils.ts"],
-  "sourcesContent": ["export function _notImplemented(): never {\n  throw new Error(\"not Implemented\")\n}"],
-  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,SAAS,kBAAyB;AACvC,QAAM,IAAI,MAAM,iBAAiB;AACnC;",
+  "sourcesContent": ["import { z } from 'zod';\n\nexport function _notImplemented(): never {\n  throw new Error(\"not Implemented\")\n}\n\nexport const makeBodySchema = <T extends z.ZodTypeAny>(schema: T) => {\n  const schemaToReturn = z.object({\n    body: schema\n  });\n  return schemaToReturn\n};"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBAAkB;AAEX,SAAS,kBAAyB;AACvC,QAAM,IAAI,MAAM,iBAAiB;AACnC;AAEO,MAAM,iBAAiB,CAAyB,WAAc;AACnE,QAAM,iBAAiB,aAAE,OAAO;AAAA,IAC9B,MAAM;AAAA,EACR,CAAC;AACD,SAAO;AACT;",
   "names": []
 }

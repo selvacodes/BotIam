@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../index.ts"],
-  "sourcesContent": ["import { Request, Response  } from 'express'\nimport express from 'express'\nimport { userRouter } from './user.route'\n// create application/json parser\nconst app = express();\n\n\napp.get(\"/alive\", (req: Request, res: Response) => {\n  res.send(\"IAM alive and well\")\n})\n\napp.use(\"/users\",userRouter) \napp.listen(3000);"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;AACA,IAAAA,kBAAoB;AACpB,kBAA2B;AAE3B,MAAM,UAAM,gBAAAC,SAAQ;AAGpB,IAAI,IAAI,UAAU,CAAC,KAAc,QAAkB;AACjD,MAAI,KAAK,oBAAoB;AAC/B,CAAC;AAED,IAAI,IAAI,UAAS,sBAAU;AAC3B,IAAI,OAAO,GAAI;",
+  "sourcesContent": ["import { Request, Response } from 'express'\nimport express from 'express'\nimport { userRouter } from './user.route'\n// create application/json parser\nconst app = express();\n\napp.get(\"/\", (req: Request, res: Response) => {\n  res.send(\"IAM alive and well\")\n})\n\n\napp.get(\"/alive\", (req: Request, res: Response) => {\n  res.send(\"IAM alive and well\")\n})\n\napp.use(\"/users\", userRouter)\napp.listen(3000);"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;AACA,IAAAA,kBAAoB;AACpB,kBAA2B;AAE3B,MAAM,UAAM,gBAAAC,SAAQ;AAEpB,IAAI,IAAI,KAAK,CAAC,KAAc,QAAkB;AAC5C,MAAI,KAAK,oBAAoB;AAC/B,CAAC;AAGD,IAAI,IAAI,UAAU,CAAC,KAAc,QAAkB;AACjD,MAAI,KAAK,oBAAoB;AAC/B,CAAC;AAED,IAAI,IAAI,UAAU,sBAAU;AAC5B,IAAI,OAAO,GAAI;",
   "names": ["import_express", "express"]
 }

@@ -18,14 +18,23 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var utils_exports = {};
 __export(utils_exports, {
-  _notImplemented: () => _notImplemented
+  _notImplemented: () => _notImplemented,
+  makeBodySchema: () => makeBodySchema
 });
 module.exports = __toCommonJS(utils_exports);
+var import_zod = require("zod");
 function _notImplemented() {
   throw new Error("not Implemented");
 }
+const makeBodySchema = (schema) => {
+  const schemaToReturn = import_zod.z.object({
+    body: schema
+  });
+  return schemaToReturn;
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  _notImplemented
+  _notImplemented,
+  makeBodySchema
 });
 //# sourceMappingURL=utils.js.map

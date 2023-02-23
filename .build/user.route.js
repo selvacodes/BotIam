@@ -28,18 +28,20 @@ __export(user_route_exports, {
 });
 module.exports = __toCommonJS(user_route_exports);
 var import_express2 = __toESM(require("express"));
-var import_zod = require("zod");
 var import_validate = require("./validate.middleware");
-var import_user = require("./user.operations");
+var import_utils = require("./utils");
+var BL = __toESM(require("./user.operations"));
+var import_user = require("./user.schema");
 var import_body_parser = __toESM(require("body-parser"));
 const jsonParser = import_body_parser.default.json();
 const userRouter = import_express2.default.Router();
-const UserSchemaInBody = import_zod.z.object({
-  body: import_user.UserSchema
-});
-userRouter.post("/add", jsonParser, (0, import_validate.validate)(UserSchemaInBody), async (req, res) => {
+userRouter.post("/add", jsonParser, (0, import_validate.validateInputSchema)((0, import_utils.makeBodySchema)(import_user.RawUserSchema)), async (req, res) => {
   const userToAdd = req.body;
-  const toReturn = await (0, import_user.addUser)(userToAdd);
+  const toReturn = await BL.addUser(userToAdd);
+  res.json(toReturn);
+});
+userRouter.get("/", async (req, res) => {
+  const toReturn = await BL.getAllUsers();
   res.json(toReturn);
 });
 // Annotate the CommonJS export names for ESM import in node:

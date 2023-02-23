@@ -1,21 +1,22 @@
 import { Request, Response } from 'express'
 import express from 'express'
-import { z } from 'zod';
-import { validate } from './validate.middleware';
-import { UserSchema, addUser, User } from './user.operations';
+import { validateInputSchema } from './validate.middleware';
+import { makeBodySchema } from './utils';
+import * as BL from './user.operations';
+import { RawUserSchema, RawUser } from "./user.schema";
 
 import bodyParser from 'body-parser'
 const jsonParser = bodyParser.json()
 
-
 export const userRouter = express.Router()
 
-const UserSchemaInBody = z.object({
-  body: UserSchema
-});
+userRouter.post("/add", jsonParser, validateInputSchema(makeBodySchema(RawUserSchema)), async (req: Request, res: Response) => {
+  const userToAdd = req.body as RawUser;
+  const toReturn = await BL.addUser(userToAdd)
+  res.json(toReturn);
+})
 
-userRouter.post("/add", jsonParser, validate(UserSchemaInBody), async (req: Request, res: Response) => {
-  const userToAdd = req.body as User;
-  const toReturn = await addUser(userToAdd)
+userRouter.get("/", async (req: Request, res: Response) => {
+  const toReturn = await BL.getAllUsers()
   res.json(toReturn);
 })

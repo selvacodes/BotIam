@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../user.schema.ts"],
+  "sourcesContent": ["import { z } from 'zod';\n\n\nexport const RawUserSchema = z.object({\n  email: z.string().email(),\n  password: z.string().min(6),\n});\n\nexport const Id = z.object({\n  id: z.string().uuid()\n});\n\nexport const _UserSchema = z.intersection(RawUserSchema, Id);\n\nexport type RawUser = z.infer<typeof RawUserSchema>;\n\nexport type User = z.infer<typeof _UserSchema>;\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBAAkB;AAGX,MAAM,gBAAgB,aAAE,OAAO;AAAA,EACpC,OAAO,aAAE,OAAO,EAAE,MAAM;AAAA,EACxB,UAAU,aAAE,OAAO,EAAE,IAAI,CAAC;AAC5B,CAAC;AAEM,MAAM,KAAK,aAAE,OAAO;AAAA,EACzB,IAAI,aAAE,OAAO,EAAE,KAAK;AACtB,CAAC;AAEM,MAAM,cAAc,aAAE,aAAa,eAAe,EAAE;",
+  "names": []
+}

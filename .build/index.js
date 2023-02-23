@@ -20,6 +20,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var import_express2 = __toESM(require("express"));
 var import_user = require("./user.route");
 const app = (0, import_express2.default)();
+app.get("/", (req, res) => {
+  res.send("IAM alive and well");
+});
 app.get("/alive", (req, res) => {
   res.send("IAM alive and well");
 });

@@ -18,23 +18,37 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var user_data_exports = {};
 __export(user_data_exports, {
-  addUserDL: () => addUserDL
+  addUser: () => addUser,
+  getAllUsers: () => getAllUsers
 });
 module.exports = __toCommonJS(user_data_exports);
 var import_uuid = require("uuid");
 var import_fs_extra = require("fs-extra");
-const addUserDL = async (user) => {
+const readStoreAndGetKey = async (key) => {
   const currentDataAsString = await (0, import_fs_extra.readFile)("./store.json", "utf-8");
   const parsed = JSON.parse(currentDataAsString);
-  const currentUsers = parsed.users;
+  return parsed[key];
+};
+const writeKeyToStore = async (key, data) => {
+  const currentDataAsString = await (0, import_fs_extra.readFile)("./store.json", "utf-8");
+  const parsed = JSON.parse(currentDataAsString);
+  const toUpdate = { ...parsed, [key]: data };
+  await (0, import_fs_extra.writeFile)("./store.json", JSON.stringify(toUpdate));
+};
+const addUser = async (user) => {
+  const currentUsers = await readStoreAndGetKey("users");
   const dataToInsert = { ...user, id: (0, import_uuid.v4)() };
-  const addedUserList = currentUsers.concat(dataToInsert);
-  const toUpdate = { ...parsed, users: addedUserList };
-  const currentDataAsString1 = await (0, import_fs_extra.writeFile)("./store.json", JSON.stringify(toUpdate));
+  const listWithUserAdded = currentUsers.concat(dataToInsert);
+  await writeKeyToStore("users", listWithUserAdded);
   return dataToInsert;
+};
+const getAllUsers = async () => {
+  const currentUsers = await readStoreAndGetKey("users");
+  return currentUsers;
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  addUserDL
+  addUser,
+  getAllUsers
 });
 //# sourceMappingURL=user.data.js.map
