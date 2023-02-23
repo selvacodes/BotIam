@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../user.operations.ts"],
+  "sourcesContent": ["import { z } from 'zod';\n\nexport const UserSchema = z.object({\n  email: z.string().email(),\n  password: z.string().min(6),\n})\n\ntype User = z.infer<typeof UserSchema>"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBAAkB;AAEX,MAAM,aAAa,aAAE,OAAO;AAAA,EACjC,OAAO,aAAE,OAAO,EAAE,MAAM;AAAA,EACxB,UAAU,aAAE,OAAO,EAAE,IAAI,CAAC;AAC5B,CAAC;",
+  "names": []
+}

@@ -18,22 +18,11 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var import_express2 = __toESM(require("express"));
-var import_zod = require("zod");
-var import_validate = require("./validate.middleware");
-var import_body_parser = __toESM(require("body-parser"));
-var jsonParser = import_body_parser.default.json();
+var import_user = require("./user.route");
 const app = (0, import_express2.default)();
-const UserSchema = import_zod.z.object({
-  body: import_zod.z.object({
-    email: import_zod.z.string().email(),
-    password: import_zod.z.string().min(6)
-  })
+app.get("/alive", (req, res) => {
+  res.send("IAM alive and well");
 });
-app.get("/", (req, res) => {
-  res.send("test");
-});
-app.post("/users/add", jsonParser, (0, import_validate.validate)(UserSchema), (req, res) => {
-  res.json({ ...req.body });
-});
+app.use("/users", import_user.userRouter);
 app.listen(3e3);
 //# sourceMappingURL=index.js.map

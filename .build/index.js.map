@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../index.ts"],
-  "sourcesContent": ["import { Request, Response, NextFunction, Express } from 'express'\nimport express from 'express'\nimport { z } from 'zod';\nimport { validate } from './validate.middleware';\nimport bodyParser from 'body-parser'\n\n// create application/json parser\nvar jsonParser = bodyParser.json()\nconst app = express();\n\nconst UserSchema = z.object({\n  body: z.object({\n    email: z.string().email(),\n    password: z.string().min(6),\n  }),\n});\napp.get(\"/\", (req : Request, res : Response) => {\n  res.send(\"test\")\n})\napp.post(\"/users/add\",jsonParser, validate(UserSchema), (req : Request, res : Response) => {\n  res.json({ ...req.body });\n})\n\napp.listen(3000);"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;AACA,IAAAA,kBAAoB;AACpB,iBAAkB;AAClB,sBAAyB;AACzB,yBAAuB;AAGvB,IAAI,aAAa,mBAAAC,QAAW,KAAK;AACjC,MAAM,UAAM,gBAAAC,SAAQ;AAEpB,MAAM,aAAa,aAAE,OAAO;AAAA,EAC1B,MAAM,aAAE,OAAO;AAAA,IACb,OAAO,aAAE,OAAO,EAAE,MAAM;AAAA,IACxB,UAAU,aAAE,OAAO,EAAE,IAAI,CAAC;AAAA,EAC5B,CAAC;AACH,CAAC;AACD,IAAI,IAAI,KAAK,CAAC,KAAe,QAAmB;AAC9C,MAAI,KAAK,MAAM;AACjB,CAAC;AACD,IAAI,KAAK,cAAa,gBAAY,0BAAS,UAAU,GAAG,CAAC,KAAe,QAAmB;AACzF,MAAI,KAAK,EAAE,GAAG,IAAI,KAAK,CAAC;AAC1B,CAAC;AAED,IAAI,OAAO,GAAI;",
-  "names": ["import_express", "bodyParser", "express"]
+  "sourcesContent": ["import { Request, Response  } from 'express'\nimport express from 'express'\nimport { userRouter } from './user.route'\n// create application/json parser\nconst app = express();\n\n\napp.get(\"/alive\", (req: Request, res: Response) => {\n  res.send(\"IAM alive and well\")\n})\n\napp.use(\"/users\",userRouter) \napp.listen(3000);"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;AACA,IAAAA,kBAAoB;AACpB,kBAA2B;AAE3B,MAAM,UAAM,gBAAAC,SAAQ;AAGpB,IAAI,IAAI,UAAU,CAAC,KAAc,QAAkB;AACjD,MAAI,KAAK,oBAAoB;AAC/B,CAAC;AAED,IAAI,IAAI,UAAS,sBAAU;AAC3B,IAAI,OAAO,GAAI;",
+  "names": ["import_express", "express"]
 }
