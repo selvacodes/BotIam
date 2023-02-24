@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../email.utils.ts"],
+  "sourcesContent": ["import * as sgMail from '@sendgrid/mail';\nsgMail.setApiKey(process.env.SEND_GRID_API_KEY as string);\n\n\ntype VerificationEmailParams = {\n  verify_url: string,\n  name: string,\n}\n\nexport const sendVerificationEmail = async (email: string, variableObj: VerificationEmailParams) => {\n  let mailObj = {\n    to: email,\n    from: \"selvaganapathy@outlook.in\",\n    templateId: \"d-48b3bd7e12cb42988411bb31dc90f156\",\n    dynamic_template_data: variableObj\n  }\n  return await sgMail.send(mailObj)\n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,aAAwB;AACxB,OAAO,UAAU,QAAQ,IAAI,iBAA2B;AAQjD,MAAM,wBAAwB,OAAO,OAAe,gBAAyC;AAClG,MAAI,UAAU;AAAA,IACZ,IAAI;AAAA,IACJ,MAAM;AAAA,IACN,YAAY;AAAA,IACZ,uBAAuB;AAAA,EACzB;AACA,SAAO,MAAM,OAAO,KAAK,OAAO;AAClC;",
+  "names": []
+}

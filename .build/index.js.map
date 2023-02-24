@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../index.ts"],
-  "sourcesContent": ["import express from 'express'\nimport { userRouter, rootRouter } from './user.route'\nimport { generateUserAccessToken } from './jwt.utils'\nconsole.log(generateUserAccessToken({ id: \"selva\" }, process.env.JWT_SECRET_KEY as string))\nconst app = express();\n\napp.use(\"/\", rootRouter)\n\napp.use(\"/user\", userRouter)\n\napp.listen(3000);"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;AAAA,qBAAoB;AACpB,kBAAuC;AACvC,iBAAwC;AACxC,QAAQ,QAAI,oCAAwB,EAAE,IAAI,QAAQ,GAAG,QAAQ,IAAI,cAAwB,CAAC;AAC1F,MAAM,UAAM,eAAAA,SAAQ;AAEpB,IAAI,IAAI,KAAK,sBAAU;AAEvB,IAAI,IAAI,SAAS,sBAAU;AAE3B,IAAI,OAAO,GAAI;",
+  "sourcesContent": ["import express from 'express'\nimport { userRouter, rootRouter } from './user.route'\nimport { authenticateRouter } from './autenticate.route'\nimport { generateUserAccessToken } from './jwt.utils'\nconsole.log(generateUserAccessToken({ id: \"selva\" }, process.env.JWT_SECRET_KEY as string))\nconst app = express();\n\napp.use(\"/\", rootRouter)\n\napp.use(\"/user\", userRouter)\n\napp.use(\"/authenticate\", authenticateRouter)\n\napp.listen(3000);"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;AAAA,qBAAoB;AACpB,kBAAuC;AACvC,yBAAmC;AACnC,iBAAwC;AACxC,QAAQ,QAAI,oCAAwB,EAAE,IAAI,QAAQ,GAAG,QAAQ,IAAI,cAAwB,CAAC;AAC1F,MAAM,UAAM,eAAAA,SAAQ;AAEpB,IAAI,IAAI,KAAK,sBAAU;AAEvB,IAAI,IAAI,SAAS,sBAAU;AAE3B,IAAI,IAAI,iBAAiB,qCAAkB;AAE3C,IAAI,OAAO,GAAI;",
   "names": ["express"]
 }

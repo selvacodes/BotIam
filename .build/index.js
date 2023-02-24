@@ -19,10 +19,12 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var import_express = __toESM(require("express"));
 var import_user = require("./user.route");
+var import_autenticate = require("./autenticate.route");
 var import_jwt = require("./jwt.utils");
 console.log((0, import_jwt.generateUserAccessToken)({ id: "selva" }, process.env.JWT_SECRET_KEY));
 const app = (0, import_express.default)();
 app.use("/", import_user.rootRouter);
 app.use("/user", import_user.userRouter);
+app.use("/authenticate", import_autenticate.authenticateRouter);
 app.listen(3e3);
 //# sourceMappingURL=index.js.map

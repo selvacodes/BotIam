@@ -18,10 +18,13 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var user_data_exports = {};
 __export(user_data_exports, {
+  addAuthRequest: () => addAuthRequest,
   addUser: () => addUser,
   deleteUser: () => deleteUser,
   getAllUsers: () => getAllUsers,
+  getAuthenticationRequest: () => getAuthenticationRequest,
   getUser: () => getUser,
+  getUserByEmail: () => getUserByEmail,
   patchUser: () => patchUser
 });
 module.exports = __toCommonJS(user_data_exports);
@@ -60,6 +63,15 @@ const getUser = async (id) => {
   }
   return import_result.Result.ok(userToReturn);
 };
+const getUserByEmail = async (email) => {
+  const currentUsers = await readStoreAndGetKey("users");
+  const userToReturn = currentUsers.find((x) => x.email === email);
+  console.log("users", email, currentUsers, userToReturn);
+  if (userToReturn === void 0) {
+    return import_result.Result.err(new Error("User not found"));
+  }
+  return import_result.Result.ok(userToReturn);
+};
 const deleteUser = async (id) => {
   const currentUsers = await readStoreAndGetKey("users");
   const userToReturn = currentUsers.find((x) => x.id === id);
@@ -84,12 +96,30 @@ const patchUser = async (id, patchData) => {
     return import_result.Result.ok(patchedData);
   }
 };
+const addAuthRequest = async (auth_request) => {
+  const currentRequests = await readStoreAndGetKey("auth_requests");
+  const dataToInsert = { ...auth_request };
+  const allUsers = currentRequests.concat(dataToInsert);
+  await writeKeyToStore("auth_requests", allUsers);
+  return import_result.Result.ok(dataToInsert);
+};
+const getAuthenticationRequest = async (id) => {
+  const currentUsers = await readStoreAndGetKey("auth_requests");
+  const requestToReturn = currentUsers.find((x) => x.id === id);
+  if (requestToReturn === void 0) {
+    return import_result.Result.err(new Error("User not found"));
+  }
+  return import_result.Result.ok(requestToReturn);
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  addAuthRequest,
   addUser,
   deleteUser,
   getAllUsers,
+  getAuthenticationRequest,
   getUser,
+  getUserByEmail,
   patchUser
 });
 //# sourceMappingURL=user.data.js.map

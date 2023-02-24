@@ -20,7 +20,9 @@ var authenticate_schema_exports = {};
 __export(authenticate_schema_exports, {
   AuthenticationAdditionalPropertiesSchema: () => AuthenticationAdditionalPropertiesSchema,
   AuthenticationSchema: () => AuthenticationSchema,
-  RawAuthenticationSchema: () => RawAuthenticationSchema
+  RawAuthenticationSchema: () => RawAuthenticationSchema,
+  TokenEncodeSchema: () => TokenEncodeSchema,
+  TokenSchema: () => TokenSchema
 });
 module.exports = __toCommonJS(authenticate_schema_exports);
 var import_zod = require("zod");
@@ -33,11 +35,20 @@ const RawAuthenticationSchema = import_zod.z.object({
 const AuthenticationAdditionalPropertiesSchema = import_zod.z.object({
   status: import_zod.z.union([import_zod.z.literal("yet_to_verify"), import_zod.z.literal("verified")])
 });
+const TokenSchema = import_zod.z.object({
+  token: import_zod.z.string()
+});
+const TokenEncodeSchema = import_zod.z.object({
+  email: import_zod.z.string().email(),
+  id: import_zod.z.string().uuid()
+});
 const AuthenticationSchema = RawAuthenticationSchema.and(import_user.IdSchema).and(AuthenticationAdditionalPropertiesSchema);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   AuthenticationAdditionalPropertiesSchema,
   AuthenticationSchema,
-  RawAuthenticationSchema
+  RawAuthenticationSchema,
+  TokenEncodeSchema,
+  TokenSchema
 });
 //# sourceMappingURL=authenticate.schema.js.map

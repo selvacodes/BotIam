@@ -24,27 +24,48 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var autenticate_route_exports = {};
 __export(autenticate_route_exports, {
-  userRouter: () => userRouter
+  authenticateRouter: () => authenticateRouter
 });
 module.exports = __toCommonJS(autenticate_route_exports);
 var import_express2 = __toESM(require("express"));
 var import_validate = require("./validate.middleware");
 var import_utils = require("./utils");
-var import_user = require("./user.schema");
+var import_jwt = require("./jwt.utils");
+var import_authenticate = require("./authenticate.schema");
+var BL = __toESM(require("./autheticate.operations"));
 var import_body_parser = __toESM(require("body-parser"));
 const jsonParser = import_body_parser.default.json();
-const userRouter = import_express2.default.Router();
-userRouter.post("/", jsonParser, (0, import_validate.validateInputSchema)((0, import_utils.makeBodySchema)(import_user.RawUserSchema)), async (req, res) => {
-  const userToAdd = req.body;
-  const toReturn = await BL.addUser(userToAdd);
-  res.json(toReturn);
+const authenticateRouter = import_express2.default.Router();
+authenticateRouter.post("/", jsonParser, (0, import_validate.validateInputSchema)((0, import_utils.makeBodySchema)(import_authenticate.RawAuthenticationSchema)), async (req, res) => {
+  try {
+    const userToAdd = req.body;
+    const toReturn = await BL.addAutheticateRequest(userToAdd);
+    (0, import_utils.sendResponse)(toReturn, res);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong");
+  }
 });
-userRouter.get("/", async (_req, res) => {
-  const toReturn = await BL.getAllUsers();
-  (0, import_utils.sendResponse)(toReturn, res);
+authenticateRouter.get("/verify/token/:token", (0, import_validate.validateInputSchema)((0, import_utils.makeParamsSchema)(import_authenticate.TokenSchema)), async (req, res) => {
+  try {
+    const params = req.params;
+    const token = (0, import_jwt.decodeMagicJWT)(params.token);
+    await BL.processVerfication(token);
+    res.send("Verfied");
+  } catch (err) {
+    res.status(500).send("Something went wrong");
+  }
+});
+authenticateRouter.post("/verify/callback", jsonParser, async (req, res) => {
+  try {
+    console.log("call back Body", req.body);
+    res.send("Verfied");
+  } catch (err) {
+    res.status(500).send("Something went wrong");
+  }
 });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  userRouter
+  authenticateRouter
 });
 //# sourceMappingURL=autenticate.route.js.map

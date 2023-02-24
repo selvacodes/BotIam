@@ -24,11 +24,15 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var jwt_utils_exports = {};
 __export(jwt_utils_exports, {
+  decodeMagicJWT: () => decodeMagicJWT,
+  generateMagicToken: () => generateMagicToken,
   generateUserAccessToken: () => generateUserAccessToken,
   generateUserRefreshToken: () => generateUserRefreshToken
 });
 module.exports = __toCommonJS(jwt_utils_exports);
 var import_jsonwebtoken = __toESM(require("jsonwebtoken"));
+var import_jwt_decode = __toESM(require("jwt-decode"));
+var import_authenticate = require("./authenticate.schema");
 const generateUserAccessToken = (data, secretKey) => {
   const token = import_jsonwebtoken.default.sign(data, secretKey, {
     expiresIn: "365d"
@@ -41,8 +45,21 @@ const generateUserRefreshToken = (data, secretKey) => {
   });
   return { token };
 };
+const generateMagicToken = (data, secretKey) => {
+  const token = import_jsonwebtoken.default.sign(data, secretKey, {
+    expiresIn: "2d"
+  });
+  return { token };
+};
+const decodeMagicJWT = (token) => {
+  var decoded = (0, import_jwt_decode.default)(token);
+  const parsed = import_authenticate.TokenEncodeSchema.parse(decoded);
+  return parsed;
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  decodeMagicJWT,
+  generateMagicToken,
   generateUserAccessToken,
   generateUserRefreshToken
 });

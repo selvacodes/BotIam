@@ -1,10 +1,12 @@
-import { RawUser, User, UserWithPermissions, UserSchema , RawUserPartial } from "./user.schema";
+import { RawUser, User, UserWithPermissions, UserSchema, RawUserPartial } from "./user.schema";
+import { RawAuthentication, Authentication } from "./authenticate.schema";
 import { v4 as uuidv4 } from 'uuid';
 import { readFile, writeFile } from 'fs-extra'
 import { Result } from '@badrap/result'
 
 type Store = {
-  users: UserWithPermissions[]
+  users: UserWithPermissions[],
+  auth_requests: Authentication[]
 }
 
 type Entities = keyof Store;
@@ -46,6 +48,18 @@ export const getUser = async (id: string): Promise<Result<UserWithPermissions>> 
   return Result.ok(userToReturn)
 }
 
+export const getUserByEmail = async (email: string): Promise<Result<UserWithPermissions>> => {
+  const currentUsers = await readStoreAndGetKey("users")
+  const userToReturn = currentUsers.find(x => x.email === email)
+  console.log("users", email, currentUsers,userToReturn)
+  if (userToReturn === undefined) {
+    return Result.err(new Error("User not found"))
+  }
+
+  return Result.ok(userToReturn)
+}
+
+
 export const deleteUser = async (id: string): Promise<Result<UserWithPermissions>> => {
   const currentUsers = await readStoreAndGetKey("users")
   const userToReturn = currentUsers.find(x => x.id === id)
@@ -64,10 +78,28 @@ export const patchUser = async (id: string, patchData: RawUserPartial): Promise<
   if (userToReturn === undefined) {
     return Result.err(new Error("User not found"))
   } else {
-    const patchedData = {...userToReturn , ...patchData}
+    const patchedData = { ...userToReturn, ...patchData }
     const allUsers = currentUsers.filter(x => x.id !== id).concat(patchedData)
-    console.log(currentUsers , patchedData,allUsers)
+    console.log(currentUsers, patchedData, allUsers)
     await writeKeyToStore("users", allUsers)
     return Result.ok(patchedData)
   }
+}
+
+export const addAuthRequest = async (auth_request: Authentication) => {
+  const currentRequests = await readStoreAndGetKey("auth_requests")
+  const dataToInsert: Authentication = { ...auth_request }
+  const allUsers = currentRequests.concat(dataToInsert)
+  await writeKeyToStore("auth_requests", allUsers)
+  return Result.ok(dataToInsert)
+}
+
+export const getAuthenticationRequest = async (id: string): Promise<Result<Authentication>> => {
+  const currentUsers = await readStoreAndGetKey("auth_requests")
+  const requestToReturn = currentUsers.find(x => x.id === id)
+  if (requestToReturn === undefined) {
+    return Result.err(new Error("User not found"))
+  }
+
+  return Result.ok(requestToReturn)
 }
