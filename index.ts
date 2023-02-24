@@ -1,17 +1,11 @@
-import { Request, Response } from 'express'
 import express from 'express'
-import { userRouter } from './user.route'
-// create application/json parser
+import { userRouter, rootRouter } from './user.route'
+import { generateUserAccessToken } from './jwt.utils'
+console.log(generateUserAccessToken({ id: "selva" }, process.env.JWT_SECRET_KEY as string))
 const app = express();
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("IAM alive and well")
-})
+app.use("/", rootRouter)
 
+app.use("/user", userRouter)
 
-app.get("/alive", (req: Request, res: Response) => {
-  res.send("IAM alive and well")
-})
-
-app.use("/users", userRouter)
 app.listen(3000);

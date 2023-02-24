@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../jwt.utils.ts"],
+  "sourcesContent": ["import jwt, { Secret, JwtPayload } from 'jsonwebtoken';\n\nexport const generateUserAccessToken = (data: JwtPayload, secretKey: string) => {\n  const token = jwt.sign(data, secretKey, {\n    expiresIn: '365d',\n  });\n  return { token: token };\n}\n\nexport const generateUserRefreshToken = (data: JwtPayload, secretKey: string) => {\n  const token = jwt.sign(data, secretKey, {\n    expiresIn: '730d',\n  });\n  return { token: token };\n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,0BAAwC;AAEjC,MAAM,0BAA0B,CAAC,MAAkB,cAAsB;AAC9E,QAAM,QAAQ,oBAAAA,QAAI,KAAK,MAAM,WAAW;AAAA,IACtC,WAAW;AAAA,EACb,CAAC;AACD,SAAO,EAAE,MAAa;AACxB;AAEO,MAAM,2BAA2B,CAAC,MAAkB,cAAsB;AAC/E,QAAM,QAAQ,oBAAAA,QAAI,KAAK,MAAM,WAAW;AAAA,IACtC,WAAW;AAAA,EACb,CAAC;AACD,SAAO,EAAE,MAAa;AACxB;",
+  "names": ["jwt"]
+}

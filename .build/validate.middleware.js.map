@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../validate.middleware.ts"],
-  "sourcesContent": ["\nimport { z } from 'zod';\nimport { Request, Response, NextFunction } from 'express'\n\nexport const validateInputSchema = <T extends z.ZodTypeAny>(schema: T) => (req: Request, res: Response, next: NextFunction) => {\n  const result = schema.safeParse({\n    body: req.body,\n    query: req.query,\n    params: req.params,\n  });\n  if (result.success) {\n    next();\n  } else {\n    res.status(400).send(\"Invalid inputs\")\n  }\n};"],
-  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAIO,MAAM,sBAAsB,CAAyB,WAAc,CAAC,KAAc,KAAe,SAAuB;AAC7H,QAAM,SAAS,OAAO,UAAU;AAAA,IAC9B,MAAM,IAAI;AAAA,IACV,OAAO,IAAI;AAAA,IACX,QAAQ,IAAI;AAAA,EACd,CAAC;AACD,MAAI,OAAO,SAAS;AAClB,SAAK;AAAA,EACP,OAAO;AACL,QAAI,OAAO,GAAG,EAAE,KAAK,gBAAgB;AAAA,EACvC;AACF;",
+  "sourcesContent": ["\nimport { z } from 'zod';\nimport { Request, Response, NextFunction } from 'express'\n\nexport const validateInputSchema = <T extends z.ZodTypeAny>(schema: T) => (req: Request, res: Response, next: NextFunction) => {\n  const result = schema.safeParse({\n    body: req.body,\n    query: req.query,\n    params: req.params,\n  });\n  if (result.success) {\n    next();\n  } else {\n    res.status(400).send({error : result.error})\n  }\n};"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAIO,MAAM,sBAAsB,CAAyB,WAAc,CAAC,KAAc,KAAe,SAAuB;AAC7H,QAAM,SAAS,OAAO,UAAU;AAAA,IAC9B,MAAM,IAAI;AAAA,IACV,OAAO,IAAI;AAAA,IACX,QAAQ,IAAI;AAAA,EACd,CAAC;AACD,MAAI,OAAO,SAAS;AAClB,SAAK;AAAA,EACP,OAAO;AACL,QAAI,OAAO,GAAG,EAAE,KAAK,EAAC,OAAQ,OAAO,MAAK,CAAC;AAAA,EAC7C;AACF;",
   "names": []
 }

@@ -19,7 +19,9 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var utils_exports = {};
 __export(utils_exports, {
   _notImplemented: () => _notImplemented,
-  makeBodySchema: () => makeBodySchema
+  makeBodySchema: () => makeBodySchema,
+  makeParamsSchema: () => makeParamsSchema,
+  sendResponse: () => sendResponse
 });
 module.exports = __toCommonJS(utils_exports);
 var import_zod = require("zod");
@@ -32,9 +34,33 @@ const makeBodySchema = (schema) => {
   });
   return schemaToReturn;
 };
+const makeParamsSchema = (schema) => {
+  const schemaToReturn = import_zod.z.object({
+    params: schema
+  });
+  return schemaToReturn;
+};
+const sendResponse = (toReturn, responseObject, sucessStatusOverride) => {
+  if (toReturn.isOk) {
+    const statusToSend = sucessStatusOverride ? sucessStatusOverride : 200;
+    responseObject.status(statusToSend).json(toReturn.unwrap());
+  }
+  if (toReturn.isErr) {
+    try {
+      toReturn.unwrap();
+    } catch (err) {
+      if (err instanceof Error) {
+        const status = err.message === "User not found" ? 404 : 500;
+        responseObject.status(status).json({ error: err.message });
+      }
+    }
+  }
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   _notImplemented,
-  makeBodySchema
+  makeBodySchema,
+  makeParamsSchema,
+  sendResponse
 });
 //# sourceMappingURL=utils.js.map

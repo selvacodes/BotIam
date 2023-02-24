@@ -30,7 +30,7 @@ const validateInputSchema = (schema) => (req, res, next) => {
   if (result.success) {
     next();
   } else {
-    res.status(400).send("Invalid inputs");
+    res.status(400).send({ error: result.error });
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

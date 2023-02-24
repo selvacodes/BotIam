@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../result.utils.ts"],
+  "sourcesContent": ["export type Result<T, E = undefined> = { ok: true, value: T }\n  | { ok: false, error: E | undefined };"],
+  "mappings": ";;;;;;;;;;;;;;AAAA;AAAA;",
+  "names": []
+}

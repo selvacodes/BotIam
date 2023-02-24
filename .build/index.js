@@ -17,15 +17,12 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var import_express2 = __toESM(require("express"));
+var import_express = __toESM(require("express"));
 var import_user = require("./user.route");
-const app = (0, import_express2.default)();
-app.get("/", (req, res) => {
-  res.send("IAM alive and well");
-});
-app.get("/alive", (req, res) => {
-  res.send("IAM alive and well");
-});
-app.use("/users", import_user.userRouter);
+var import_jwt = require("./jwt.utils");
+console.log((0, import_jwt.generateUserAccessToken)({ id: "selva" }, process.env.JWT_SECRET_KEY));
+const app = (0, import_express.default)();
+app.use("/", import_user.rootRouter);
+app.use("/user", import_user.userRouter);
 app.listen(3e3);
 //# sourceMappingURL=index.js.map

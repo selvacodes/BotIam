@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../authenticate.schema.ts"],
+  "sourcesContent": ["import { z } from 'zod';\nimport { IdSchema } from './user.schema';\n\nexport const RawAuthenticationSchema = z.object({\n  email: z.string().email(),\n  type: z.literal(\"magic_link\"),\n  callback_url: z.string().url(),\n});\n\nexport const AuthenticationAdditionalPropertiesSchema = z.object({\n  status: z.union([z.literal(\"yet_to_verify\"), z.literal(\"verified\")])\n});\n\n\nexport const AuthenticationSchema = RawAuthenticationSchema.and(IdSchema).and(AuthenticationAdditionalPropertiesSchema)\n\n\ntype RawAuthentication = z.infer<typeof RawAuthenticationSchema>\ntype Authentication = z.infer<typeof AuthenticationSchema>"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBAAkB;AAClB,kBAAyB;AAElB,MAAM,0BAA0B,aAAE,OAAO;AAAA,EAC9C,OAAO,aAAE,OAAO,EAAE,MAAM;AAAA,EACxB,MAAM,aAAE,QAAQ,YAAY;AAAA,EAC5B,cAAc,aAAE,OAAO,EAAE,IAAI;AAC/B,CAAC;AAEM,MAAM,2CAA2C,aAAE,OAAO;AAAA,EAC/D,QAAQ,aAAE,MAAM,CAAC,aAAE,QAAQ,eAAe,GAAG,aAAE,QAAQ,UAAU,CAAC,CAAC;AACrE,CAAC;AAGM,MAAM,uBAAuB,wBAAwB,IAAI,oBAAQ,EAAE,IAAI,wCAAwC;",
+  "names": []
+}

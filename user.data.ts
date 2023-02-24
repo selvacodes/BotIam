@@ -1,9 +1,10 @@
-import { RawUser, User } from "./user.schema";
+import { RawUser, User, UserWithPermissions, UserSchema , RawUserPartial } from "./user.schema";
 import { v4 as uuidv4 } from 'uuid';
 import { readFile, writeFile } from 'fs-extra'
+import { Result } from '@badrap/result'
 
 type Store = {
-  users: User[]
+  users: UserWithPermissions[]
 }
 
 type Entities = keyof Store;
@@ -23,13 +24,50 @@ const writeKeyToStore = async  <T extends Entities>(key: T, data: Store[T]): Pro
 
 export const addUser = async (user: RawUser) => {
   const currentUsers = await readStoreAndGetKey("users")
-  const dataToInsert: User = { ...user, id: uuidv4() }
+  const dataToInsert: UserWithPermissions = { ...user, id: uuidv4(), permissions: [] }
   const listWithUserAdded = currentUsers.concat(dataToInsert)
   await writeKeyToStore("users", listWithUserAdded)
-  return dataToInsert
+  const userStripedOfPermissions = UserSchema.parse(dataToInsert)
+  return userStripedOfPermissions
 }
 
-export const getAllUsers = async (): Promise<User[]> => {
+export const getAllUsers = async (): Promise<Result<UserWithPermissions[]>> => {
   const currentUsers = await readStoreAndGetKey("users")
-  return currentUsers
+  return Result.ok(currentUsers)
+}
+
+export const getUser = async (id: string): Promise<Result<UserWithPermissions>> => {
+  const currentUsers = await readStoreAndGetKey("users")
+  const userToReturn = currentUsers.find(x => x.id === id)
+  if (userToReturn === undefined) {
+    return Result.err(new Error("User not found"))
+  }
+
+  return Result.ok(userToReturn)
+}
+
+export const deleteUser = async (id: string): Promise<Result<UserWithPermissions>> => {
+  const currentUsers = await readStoreAndGetKey("users")
+  const userToReturn = currentUsers.find(x => x.id === id)
+  if (userToReturn === undefined) {
+    return Result.err(new Error("User not found"))
+  } else {
+    const allUsersButThis = currentUsers.filter(x => x.id !== id)
+    await writeKeyToStore("users", allUsersButThis)
+    return Result.ok(userToReturn)
+  }
+}
+
+export const patchUser = async (id: string, patchData: RawUserPartial): Promise<Result<UserWithPermissions>> => {
+  const currentUsers = await readStoreAndGetKey("users")
+  const userToReturn = currentUsers.find(x => x.id === id)
+  if (userToReturn === undefined) {
+    return Result.err(new Error("User not found"))
+  } else {
+    const patchedData = {...userToReturn , ...patchData}
+    const allUsers = currentUsers.filter(x => x.id !== id).concat(patchedData)
+    console.log(currentUsers , patchedData,allUsers)
+    await writeKeyToStore("users", allUsers)
+    return Result.ok(patchedData)
+  }
 }

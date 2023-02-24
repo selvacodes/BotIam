@@ -11,6 +11,6 @@ export const validateInputSchema = <T extends z.ZodTypeAny>(schema: T) => (req: 
   if (result.success) {
     next();
   } else {
-    res.status(400).send("Invalid inputs")
+    res.status(400).send({error : result.error})
   }
 };

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../index.ts"],
-  "sourcesContent": ["import { Request, Response } from 'express'\nimport express from 'express'\nimport { userRouter } from './user.route'\n// create application/json parser\nconst app = express();\n\napp.get(\"/\", (req: Request, res: Response) => {\n  res.send(\"IAM alive and well\")\n})\n\n\napp.get(\"/alive\", (req: Request, res: Response) => {\n  res.send(\"IAM alive and well\")\n})\n\napp.use(\"/users\", userRouter)\napp.listen(3000);"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;AACA,IAAAA,kBAAoB;AACpB,kBAA2B;AAE3B,MAAM,UAAM,gBAAAC,SAAQ;AAEpB,IAAI,IAAI,KAAK,CAAC,KAAc,QAAkB;AAC5C,MAAI,KAAK,oBAAoB;AAC/B,CAAC;AAGD,IAAI,IAAI,UAAU,CAAC,KAAc,QAAkB;AACjD,MAAI,KAAK,oBAAoB;AAC/B,CAAC;AAED,IAAI,IAAI,UAAU,sBAAU;AAC5B,IAAI,OAAO,GAAI;",
-  "names": ["import_express", "express"]
+  "sourcesContent": ["import express from 'express'\nimport { userRouter, rootRouter } from './user.route'\nimport { generateUserAccessToken } from './jwt.utils'\nconsole.log(generateUserAccessToken({ id: \"selva\" }, process.env.JWT_SECRET_KEY as string))\nconst app = express();\n\napp.use(\"/\", rootRouter)\n\napp.use(\"/user\", userRouter)\n\napp.listen(3000);"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;AAAA,qBAAoB;AACpB,kBAAuC;AACvC,iBAAwC;AACxC,QAAQ,QAAI,oCAAwB,EAAE,IAAI,QAAQ,GAAG,QAAQ,IAAI,cAAwB,CAAC;AAC1F,MAAM,UAAM,eAAAA,SAAQ;AAEpB,IAAI,IAAI,KAAK,sBAAU;AAEvB,IAAI,IAAI,SAAS,sBAAU;AAE3B,IAAI,OAAO,GAAI;",
+  "names": ["express"]
 }

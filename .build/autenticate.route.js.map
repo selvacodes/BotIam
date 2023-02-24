@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../autenticate.route.ts"],
+  "sourcesContent": ["import { Request, Response } from 'express'\nimport express from 'express'\nimport { validateInputSchema } from './validate.middleware';\nimport { makeBodySchema, makeParamsSchema, sendResponse } from './utils';\nimport { RawUserSchema, RawUser, IdSchema, RawUserPartialSchema } from \"./user.schema\";\n\nimport bodyParser from 'body-parser'\nconst jsonParser = bodyParser.json()\n\nexport const userRouter = express.Router()\n\nuserRouter.post(\"/\", jsonParser, validateInputSchema(makeBodySchema(RawUserSchema)), async (req: Request, res: Response) => {\n  const userToAdd = req.body as RawUser;\n  const toReturn = await BL.addUser(userToAdd)\n  res.json(toReturn);\n})\n\nuserRouter.get(\"/\", async (_req: Request, res: Response) => {\n  const toReturn = await BL.getAllUsers()\n  sendResponse(toReturn, res)\n})\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AACA,IAAAA,kBAAoB;AACpB,sBAAoC;AACpC,mBAA+D;AAC/D,kBAAuE;AAEvE,yBAAuB;AACvB,MAAM,aAAa,mBAAAC,QAAW,KAAK;AAE5B,MAAM,aAAa,gBAAAC,QAAQ,OAAO;AAEzC,WAAW,KAAK,KAAK,gBAAY,yCAAoB,6BAAe,yBAAa,CAAC,GAAG,OAAO,KAAc,QAAkB;AAC1H,QAAM,YAAY,IAAI;AACtB,QAAM,WAAW,MAAM,GAAG,QAAQ,SAAS;AAC3C,MAAI,KAAK,QAAQ;AACnB,CAAC;AAED,WAAW,IAAI,KAAK,OAAO,MAAe,QAAkB;AAC1D,QAAM,WAAW,MAAM,GAAG,YAAY;AACtC,iCAAa,UAAU,GAAG;AAC5B,CAAC;",
+  "names": ["import_express", "bodyParser", "express"]
+}

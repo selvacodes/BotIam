@@ -24,6 +24,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var user_route_exports = {};
 __export(user_route_exports, {
+  rootRouter: () => rootRouter,
   userRouter: () => userRouter
 });
 module.exports = __toCommonJS(user_route_exports);
@@ -35,17 +36,41 @@ var import_user = require("./user.schema");
 var import_body_parser = __toESM(require("body-parser"));
 const jsonParser = import_body_parser.default.json();
 const userRouter = import_express2.default.Router();
-userRouter.post("/add", jsonParser, (0, import_validate.validateInputSchema)((0, import_utils.makeBodySchema)(import_user.RawUserSchema)), async (req, res) => {
+userRouter.post("/", jsonParser, (0, import_validate.validateInputSchema)((0, import_utils.makeBodySchema)(import_user.RawUserSchema)), async (req, res) => {
   const userToAdd = req.body;
   const toReturn = await BL.addUser(userToAdd);
   res.json(toReturn);
 });
-userRouter.get("/", async (req, res) => {
+userRouter.get("/", async (_req, res) => {
   const toReturn = await BL.getAllUsers();
-  res.json(toReturn);
+  (0, import_utils.sendResponse)(toReturn, res);
+});
+userRouter.get("/:id", (0, import_validate.validateInputSchema)((0, import_utils.makeParamsSchema)(import_user.IdSchema)), async (req, res) => {
+  const toReturn = await BL.getuser(req.params.id);
+  (0, import_utils.sendResponse)(toReturn, res);
+});
+userRouter.delete("/:id", (0, import_validate.validateInputSchema)((0, import_utils.makeParamsSchema)(import_user.IdSchema)), async (req, res) => {
+  const toReturn = await BL.deleteUser(req.params.id);
+  (0, import_utils.sendResponse)(toReturn, res);
+});
+userRouter.patch("/:id", jsonParser, (0, import_validate.validateInputSchema)((0, import_utils.makeBodySchema)(import_user.RawUserPartialSchema)), (0, import_validate.validateInputSchema)((0, import_utils.makeParamsSchema)(import_user.IdSchema)), async (req, res) => {
+  const toReturn = await BL.patchUser(req.params.id, req.body);
+  (0, import_utils.sendResponse)(toReturn, res);
+});
+const rootRouter = import_express2.default.Router();
+rootRouter.get("/users", async (_req, res) => {
+  const toReturn = await BL.getAllUsers();
+  (0, import_utils.sendResponse)(toReturn, res);
+});
+rootRouter.get("/", (req, res) => {
+  res.send("IAM alive and well");
+});
+rootRouter.get("/alive", (req, res) => {
+  res.send("IAM alive and well");
 });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  rootRouter,
   userRouter
 });
 //# sourceMappingURL=user.route.js.map

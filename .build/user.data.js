@@ -19,11 +19,16 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var user_data_exports = {};
 __export(user_data_exports, {
   addUser: () => addUser,
-  getAllUsers: () => getAllUsers
+  deleteUser: () => deleteUser,
+  getAllUsers: () => getAllUsers,
+  getUser: () => getUser,
+  patchUser: () => patchUser
 });
 module.exports = __toCommonJS(user_data_exports);
+var import_user = require("./user.schema");
 var import_uuid = require("uuid");
 var import_fs_extra = require("fs-extra");
+var import_result = require("@badrap/result");
 const readStoreAndGetKey = async (key) => {
   const currentDataAsString = await (0, import_fs_extra.readFile)("./store.json", "utf-8");
   const parsed = JSON.parse(currentDataAsString);
@@ -37,18 +42,54 @@ const writeKeyToStore = async (key, data) => {
 };
 const addUser = async (user) => {
   const currentUsers = await readStoreAndGetKey("users");
-  const dataToInsert = { ...user, id: (0, import_uuid.v4)() };
+  const dataToInsert = { ...user, id: (0, import_uuid.v4)(), permissions: [] };
   const listWithUserAdded = currentUsers.concat(dataToInsert);
   await writeKeyToStore("users", listWithUserAdded);
-  return dataToInsert;
+  const userStripedOfPermissions = import_user.UserSchema.parse(dataToInsert);
+  return userStripedOfPermissions;
 };
 const getAllUsers = async () => {
   const currentUsers = await readStoreAndGetKey("users");
-  return currentUsers;
+  return import_result.Result.ok(currentUsers);
+};
+const getUser = async (id) => {
+  const currentUsers = await readStoreAndGetKey("users");
+  const userToReturn = currentUsers.find((x) => x.id === id);
+  if (userToReturn === void 0) {
+    return import_result.Result.err(new Error("User not found"));
+  }
+  return import_result.Result.ok(userToReturn);
+};
+const deleteUser = async (id) => {
+  const currentUsers = await readStoreAndGetKey("users");
+  const userToReturn = currentUsers.find((x) => x.id === id);
+  if (userToReturn === void 0) {
+    return import_result.Result.err(new Error("User not found"));
+  } else {
+    const allUsersButThis = currentUsers.filter((x) => x.id !== id);
+    await writeKeyToStore("users", allUsersButThis);
+    return import_result.Result.ok(userToReturn);
+  }
+};
+const patchUser = async (id, patchData) => {
+  const currentUsers = await readStoreAndGetKey("users");
+  const userToReturn = currentUsers.find((x) => x.id === id);
+  if (userToReturn === void 0) {
+    return import_result.Result.err(new Error("User not found"));
+  } else {
+    const patchedData = { ...userToReturn, ...patchData };
+    const allUsers = currentUsers.filter((x) => x.id !== id).concat(patchedData);
+    console.log(currentUsers, patchedData, allUsers);
+    await writeKeyToStore("users", allUsers);
+    return import_result.Result.ok(patchedData);
+  }
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   addUser,
-  getAllUsers
+  deleteUser,
+  getAllUsers,
+  getUser,
+  patchUser
 });
 //# sourceMappingURL=user.data.js.map

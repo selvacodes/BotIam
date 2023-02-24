@@ -25,20 +25,48 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var user_operations_exports = {};
 __export(user_operations_exports, {
   addUser: () => addUser,
-  getAllUsers: () => getAllUsers
+  deleteUser: () => deleteUser,
+  getAllUsers: () => getAllUsers,
+  getuser: () => getuser,
+  patchUser: () => patchUser
 });
 module.exports = __toCommonJS(user_operations_exports);
 var DL = __toESM(require("./user.data"));
+var import_user = require("./user.schema");
 const addUser = async (user) => {
   const addedUser = await DL.addUser(user);
   return addedUser;
 };
 const getAllUsers = async () => {
-  return DL.getAllUsers();
+  const allUsers = await DL.getAllUsers();
+  return allUsers.map((x) => x.filter((user) => user.permissions.length === 0).map((y) => import_user.UserSchema.parse(y)));
+};
+const getuser = async (id) => {
+  const userResult = await DL.getUser(id);
+  const parsedResult = userResult.map((x) => import_user.UserSchema.parse(x));
+  return parsedResult;
+};
+const deleteUser = async (id) => {
+  const userResult = await DL.deleteUser(id);
+  const parsedResult = userResult.map((x) => import_user.UserSchema.parse(x));
+  return parsedResult;
+};
+const patchUser = async (id, patchData) => {
+  const parsedPatchData = import_user.RawUserPartialSchema.parse(patchData);
+  console.log(
+    "parsed",
+    parsedPatchData
+  );
+  const userResult = await DL.patchUser(id, parsedPatchData);
+  const parsedResult = userResult.map((x) => import_user.UserSchema.parse(x));
+  return parsedResult;
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   addUser,
-  getAllUsers
+  deleteUser,
+  getAllUsers,
+  getuser,
+  patchUser
 });
 //# sourceMappingURL=user.operations.js.map
